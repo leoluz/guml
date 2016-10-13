@@ -34,7 +34,7 @@ public class GitProjectService {
         log.info("Cloned remote repository {}.", gitRemoteRepoUrl);
     }
 
-    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedRateString = '${git.fetch.rate}')
     public void updateGitRepo() {
         log.info("Refreshing git repository...");
         gitRepository.refresh();
