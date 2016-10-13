@@ -31,6 +31,7 @@ configurations {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    compile 'org.eclipse.jgit:org.eclipse.jgit:4.5.0.201609210915-r'
     compile 'net.sourceforge.plantuml:plantuml:8048'
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
