@@ -1,4 +1,6 @@
-package com.guml.app;
+package com.guml.app
+
+import com.guml.infra.GitRepository;
 
 import javax.annotation.PostConstruct;
 
@@ -9,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.guml.infra.GitRepository;
 
 @Service
 @EnableScheduling
