@@ -29,15 +29,16 @@ public class GitProjectService {
 
     @PostConstruct
     private void init() {
-        localDirectory = Files.createTempDirectory("umlrepo").toFile();
-        gitRepository = GitRepository.cloneRemote(gitRemoteRepoUrl, gitBranch, localDirectory);
-        log.info("Cloned remote repository {}.", gitRemoteRepoUrl);
+        localDirectory = Files.createTempDirectory("umlrepo").toFile()
+        localDirectory.deleteOnExit()
+        gitRepository = GitRepository.cloneRemote(gitRemoteRepoUrl, gitBranch, localDirectory)
+        log.info("Cloned remote repository {}.", gitRemoteRepoUrl)
     }
 
-    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedRateString = '${git.fetch.rate}')
     public void updateGitRepo() {
-        log.info("Refreshing git repository...");
-        gitRepository.refresh();
+        log.info("Refreshing git repository...")
+        gitRepository.refresh()
     }
 
     public String getDiagramDsl(String diagramId) {
