@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 
 import javax.annotation.PostConstruct
-import java.nio.file.Files
 
 @Service
 @EnableScheduling
@@ -23,15 +22,11 @@ public class GitProjectService {
     @Value('${git.branch}')
     private String gitBranch
 
-    File localDirectory
-
     private GitRepository gitRepository;
 
     @PostConstruct
     private void init() {
-        localDirectory = Files.createTempDirectory("umlrepo").toFile()
-        localDirectory.deleteOnExit()
-        gitRepository = GitRepository.cloneRemote(gitRemoteRepoUrl, gitBranch, localDirectory)
+        gitRepository = GitRepository.cloneRemote(gitRemoteRepoUrl, gitBranch)
         log.info("Cloned remote repository {}.", gitRemoteRepoUrl)
     }
 
@@ -42,10 +37,15 @@ public class GitProjectService {
     }
 
     public String getDiagramDsl(String diagramId) {
-        getDiagramFile(diagramId).text
+        try {
+            getDiagramFile(diagramId).text
+        } catch (FileNotFoundException e) {
+            throw new DiagramNotFoundException("Diagram with id ${diagramId} not found!", e)
+        }
     }
 
     private File getDiagramFile(String diagramId) {
+        File localDirectory = gitRepository.getLocalRepository()
         String diagramPath = "${localDirectory.absolutePath}/dsl/";
         diagramPath += "${diagramId.replace('-', '/').toLowerCase()}.puml"
         log.info("Getting dsl from path: ${diagramPath}")
