@@ -6,6 +6,8 @@ import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.merge.MergeStrategy
 
 import java.nio.file.Files
+import java.time.Instant
+import java.time.ZoneId
 
 public class GitRepository {
 
@@ -26,6 +28,18 @@ public class GitRepository {
 
     public File getLocalRepository() {
        gitRepo.directory.parentFile
+    }
+
+    public List<Revision> getHistory(String path) {
+        List<Revision> history;
+        try {
+            history = new Git(gitRepo).log().addPath(path).call().collect({ revCommit ->
+                new Revision(revCommit.name, revCommit.authorIdent.name, Instant.ofEpochSecond(revCommit.commitTime).atZone(ZoneId.systemDefault()).toLocalDate())
+            })
+            return history
+        } catch (GitAPIException e) {
+            throw new GitException("Failed to retrieve file history.", e)
+        }
     }
 
     public static GitRepository cloneRemote(String remoteUri, String branch) {

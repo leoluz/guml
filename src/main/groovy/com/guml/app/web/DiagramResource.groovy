@@ -44,10 +44,11 @@ class DiagramResource {
 
     @RequestMapping(method = GET, value = "/{diagramId}", produces=APPLICATION_JSON_VALUE)
     def getDiagramJson(@PathVariable diagramId) {
-        def diagram = new Diagram()
-        diagram.id = diagramId
-        diagram.name = "Some cool diagram!"
-        diagram
+        Map<String, Object> json = new HashMap<>();
+        json.put("id", diagramId)
+        json.put("dsl", projectService.getDiagramDsl(diagramId))
+        json.put("history", projectService.getDiagramHistory(diagramId))
+        return json
     }
 
     @RequestMapping(method = GET, value = "/{diagramId}", produces=IMAGE_PNG_VALUE)

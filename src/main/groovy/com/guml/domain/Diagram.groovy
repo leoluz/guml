@@ -3,7 +3,7 @@ package com.guml.domain
 import net.sourceforge.plantuml.SourceStringReader
 
 class Diagram {
-    def id, name
+    def id
     String dsl
 
     def buildImage() {
