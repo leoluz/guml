@@ -1,13 +1,9 @@
-package com.guml.infra;
+package com.guml.infra
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.merge.MergeStrategy;
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.errors.GitAPIException
+import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.merge.MergeStrategy
 
 public class GitRepository {
 
@@ -26,9 +22,8 @@ public class GitRepository {
         }
     }
 
-    public static GitRepository cloneRemote(String remoteUri, String branch) {
+    public static GitRepository cloneRemote(String remoteUri, String branch, File localDirectory) {
         try {
-            File localDirectory = Files.createTempDirectory("gumlrepo").toFile();
             Repository gitRepo = Git.cloneRepository()
                     .setURI(remoteUri)
                     .setDirectory(localDirectory)
@@ -41,15 +36,4 @@ public class GitRepository {
             throw new GitException("Cannot clone remote git repository.", e);
         }
     }
-
-    public static GitRepository readLocal(String localPath) {
-        Repository gitRepo = null;
-        try {
-            gitRepo = Git.open(new File(localPath)).getRepository();
-            return new GitRepository(gitRepo);
-        } catch (IOException e) {
-            throw new GitException("Cannot read local git repository.", e);
-        }
-    }
-
 }

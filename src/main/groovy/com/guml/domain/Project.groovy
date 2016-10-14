@@ -1,6 +1,4 @@
-package com.guml.domain;
-
-import java.util.List;
+package com.guml.domain
 
 public class Project {
 
