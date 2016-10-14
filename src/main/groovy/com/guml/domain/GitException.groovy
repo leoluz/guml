@@ -1,4 +1,4 @@
-package com.guml.infra;
+package com.guml.domain;
 
 public class GitException extends RuntimeException {
 
