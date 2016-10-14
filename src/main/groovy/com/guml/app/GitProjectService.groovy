@@ -1,6 +1,7 @@
 package com.guml.app
 
 import com.guml.infra.GitRepository
+import com.guml.infra.Revision
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -44,13 +45,19 @@ public class GitProjectService {
         }
     }
 
+    public List<Revision> getDiagramHistory(String diagramId) {
+        String diagramPath = getDiagramFile(diagramId).getCanonicalPath()
+                .replace(gitRepository.localRepository.canonicalPath + "/", "")
+        return gitRepository.getHistory(diagramPath)
+    }
+
     private File getDiagramFile(String diagramId) {
         File localDirectory = gitRepository.getLocalRepository()
-        String diagramPath = "${localDirectory.absolutePath}/dsl/";
+        String diagramPath = "${localDirectory.absolutePath}/dsl/"
         diagramPath += "${diagramId.replace('-', '/').toLowerCase()}.puml"
         log.info("Getting dsl from path: ${diagramPath}")
-
         new File(diagramPath)
     }
+
 
 }
