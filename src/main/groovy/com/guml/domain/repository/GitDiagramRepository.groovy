@@ -1,5 +1,7 @@
-package com.guml.domain
+package com.guml.domain.repository
 
+import com.guml.domain.Diagram
+import com.guml.domain.Revision
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.Repository
@@ -42,7 +44,7 @@ public class GitDiagramRepository implements DiagramRepository {
             Git git = new Git(gitRepo);
             git.pull().setStrategy(MergeStrategy.THEIRS).call();
         } catch (GitAPIException e) {
-            throw new GitException("Cannot pull from remote.", e);
+            throw new RepositoryException("Cannot pull from remote.", e);
         }
     }
 
@@ -59,7 +61,7 @@ public class GitDiagramRepository implements DiagramRepository {
                     .getRepository();
             return new GitDiagramRepository(gitRepo, diagramsRootDirectory);
         } catch (IOException | GitAPIException e) {
-            throw new GitException("Cannot clone remote git repository.", e);
+            throw new RepositoryException("Cannot clone remote git repository.", e);
         }
     }
 
@@ -73,7 +75,7 @@ public class GitDiagramRepository implements DiagramRepository {
             })
             return history;
         } catch (GitAPIException e) {
-            throw new GitException("Failed to retrieve file history.", e);
+            throw new RepositoryException("Failed to retrieve file history.", e);
         }
     }
 }

@@ -1,4 +1,6 @@
-package com.guml.domain
+package com.guml.domain.repository
+
+import com.guml.domain.Diagram
 
 public interface DiagramRepository {
 

@@ -1,17 +1,16 @@
-package com.guml.app
+package com.guml.domain.service
 
 import com.guml.domain.Diagram
-import com.guml.domain.DiagramRepository
-import net.sourceforge.plantuml.SourceStringReader
+import com.guml.domain.repository.DiagramRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
-@Service
 @EnableScheduling
+@Component
 public class DiagramService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -29,16 +28,12 @@ public class DiagramService {
         diagramRepository.update();
     }
 
-    public Optional<Diagram> getDiagram(String id) {
-        return diagramRepository.findById(id);
+    public Diagram getDiagram(String id) {
+        Optional<Diagram> diagram = diagramRepository.findById(id);
+        if (diagram.isPresent()) {
+            diagram.get()
+        } else {
+            throw new DiagramNotFoundException("Diagram with id ${id} not found!")
+        }
     }
-
-    public byte[] buildImage(Diagram diagram) {
-        log.info("Generating diagram image from DSL for {}", diagram);
-        OutputStream os = new ByteArrayOutputStream();
-        SourceStringReader reader = new SourceStringReader(diagram.getDsl());
-        reader.generateImage(os);
-        return os.toByteArray();
-    }
-
 }
