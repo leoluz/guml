@@ -1,7 +1,7 @@
 package com.guml.app
 
-import com.guml.domain.DiagramRepository
-import com.guml.domain.GitDiagramRepository
+import com.guml.domain.repository.DiagramRepository
+import com.guml.domain.repository.GitDiagramRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value

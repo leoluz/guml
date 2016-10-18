@@ -1,5 +1,7 @@
 package com.guml.domain
 
+import net.sourceforge.plantuml.SourceStringReader
+
 public class Diagram {
 
     private final String id;
@@ -22,6 +24,13 @@ public class Diagram {
 
     public List<Revision> getHistory() {
         return history
+    }
+
+    public byte[] buildImage() {
+        OutputStream os = new ByteArrayOutputStream();
+        SourceStringReader reader = new SourceStringReader(dsl);
+        reader.generateImage(os);
+        return os.toByteArray();
     }
 
     boolean equals(o) {
